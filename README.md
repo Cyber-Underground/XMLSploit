@@ -4,11 +4,23 @@ XMLSploit is a powerful tool designed to aid in the exploration and analysis of 
 
 ## Features
 
-- **Comprehensive XML Payloads:** Explore a wide range of XML vulnerabilities with meticulously crafted payloads, covering scenarios such as XML External Entity (XXE) attacks, denial-of-service (DoS) attacks, file disclosures, access control bypasses, server-side request forgery (SSRF), and more.
-
-- **User-Friendly Interface:** The included Python script offers a user-friendly interface for selecting and sending XML payloads to target URLs, as well as scanning websites for XML files and potential vulnerabilities.
-
-- **Concurrent Execution:** With support for concurrent execution and customizable threading options, the script facilitates efficient testing and assessment of XML security posture across web applications.
+- **Comprehensive XML Payloads:** Explore a wide range of XML vulnerabilities with meticulously crafted payloads, covering the following exploit scenarios:
+  - Exfiltration Fork Bomb
+  - Simple XML Entity
+  - Parameter Entity Expanding to External Entity
+  - External Entity Inclusion
+  - XXE: Entity Example
+  - XXE: File Disclosure
+  - XXE: Denial-of-Service Example
+  - XXE: Local File Inclusion Example
+  - XXE: Blind Local File Inclusion Example
+  - XXE: Access Control Bypass (Loading Restricted Resources - PHP example)
+  - XXE: SSRF (Server Side Request Forgery) Example
+  - XXE: Remote Attack (Through External XML Inclusion) Example
+  - XXE: UTF-7 Example
+  - XXE: Base64 Encoded Example
+  - XXE: XXE inside SOAP Example
+  - XXE: XXE inside SVG
 
 ## Usage
 
