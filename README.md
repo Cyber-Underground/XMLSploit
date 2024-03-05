@@ -9,17 +9,17 @@ XMLSploit is a powerful tool designed to aid in the exploration and analysis of 
   - Simple XML Entity
   - Parameter Entity Expanding to External Entity
   - External Entity Inclusion
-  - XXE: Entity Example
+  - XXE: Entity 
   - XXE: File Disclosure
-  - XXE: Denial-of-Service Example
-  - XXE: Local File Inclusion Example
-  - XXE: Blind Local File Inclusion Example
+  - XXE: Denial-of-Service 
+  - XXE: Local File Inclusion 
+  - XXE: Blind Local File Inclusion 
   - XXE: Access Control Bypass (Loading Restricted Resources - PHP example)
   - XXE: SSRF (Server Side Request Forgery) Example
   - XXE: Remote Attack (Through External XML Inclusion) Example
   - XXE: UTF-7 Example
-  - XXE: Base64 Encoded Example
-  - XXE: XXE inside SOAP Example
+  - XXE: Base64 Encoded 
+  - XXE: XXE inside SOAP 
   - XXE: XXE inside SVG
 
 ## Usage
@@ -43,7 +43,7 @@ XMLSploit is a powerful tool designed to aid in the exploration and analysis of 
     ```
 
 4. **Follow the On-Screen Instructions:**
-
+    
     - Choose an option to send XML payloads to a target URL or scan a website for XML files.
     - Select a payload from the provided list.
     - Enter the target URL or website URL as prompted.
