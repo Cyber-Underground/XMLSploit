@@ -1,7 +1,8 @@
+import validators
+import pyfiglet
 import requests
 import concurrent.futures
 from colorama import init, Fore
-import pyfiglet
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 from payloads import xml_payloads
@@ -189,24 +190,32 @@ def main():
     if option == "1":
       url = input(
           "\nEnter the target URL where the XML payload will be sent: ")
-      payload = select_payload(xml_payloads)
-      num_threads = int(
-          input("\nEnter the number of threads (default is 1): ") or "1")
-      print("\nSending payloads...")
-      with concurrent.futures.ThreadPoolExecutor(
-          max_workers=num_threads) as executor:
-        futures = []
-        for _ in range(num_threads):
-          futures.append(executor.submit(send_payload, url, payload))
+      validation = url
+      if validators.url(validation):
+        payload = select_payload(xml_payloads)
+        num_threads = int(
+            input("\nEnter the number of threads (default is 1): ") or "1")
+        print("\nSending payloads...")
+        with concurrent.futures.ThreadPoolExecutor(
+            max_workers=num_threads) as executor:
+          futures = []
+          for _ in range(num_threads):
+            futures.append(executor.submit(send_payload, url, payload))
 
-        for future in concurrent.futures.as_completed(futures):
-          future.result()
+          for future in concurrent.futures.as_completed(futures):
+            future.result()
+      else:
+        print(Fore.RED + "Invalid URL" + Fore.RESET)
 
     elif option == "2":
       url = input("\nEnter the website URL to scan for XML files: ")
-      mode = input("\nChoose scanning mode (basic/advanced): ").lower()
-      scan_website_for_xml(url, mode)
-
+      validation = url
+      if validators.url(validation):
+        mode = input("\nChoose scanning mode (basic/advanced): ").lower()
+        scan_website_for_xml(url, mode)
+      else:
+        print(Fore.RED + "Invalid URL" + Fore.RESET)
+        
     elif option == "3":
       print("Exiting...")
       break
