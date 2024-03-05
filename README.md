@@ -4,8 +4,29 @@ XMLSploit is a powerful tool designed to aid in the exploration and analysis of 
 
 ## Features
 
+- **Send XML Payload to Target URL:**
+   - Users can send XML payloads to target URLs.
+   - The tool allows users to select from a variety of XML payloads.
+
+- **Scan Website for XML Files and Vulnerabilities:**
+   - XMLSploit can scan websites for XML files in basic or advanced modes.
+   - In advanced mode, the tool performs the following checks:
+     - Fuzzing URLs to discover XML files.
+     - Detection of common XML files like sitemaps and feeds.
+     - Analysis of robots.txt to identify XML file exclusions.
+     - Vulnerability checks:
+       - XPath Injection detection.
+       - XML Signature Spoofing detection.
+       - XML Bomb (Billion Laughs) detection.
+       - XML External Entity (XXE) Over HTTP detection.
+       - Schema Poisoning vulnerability detection.
+       - XPath Expression Injection detection.
+       - Detection of potential SQL queries, code injections, command injections, and shell commands in XML content.
+       - Identification of XML entities and potential XML bomb attacks.
+   - Extraction of sensitive information:
+     - Detection of database connection strings, API keys, encryption keys, and more.
+
 - **Comprehensive XML Payloads:** Explore a wide range of XML vulnerabilities with meticulously crafted payloads, covering the following exploit scenarios:
-  - XML file and vuln scanner
   - Exfiltration Fork Bomb
   - Simple XML Entity
   - Parameter Entity Expanding to External Entity
