@@ -49,7 +49,7 @@ XMLSploit is a powerful tool designed to aid in the exploration and analysis of 
 1. **Clone the Repository:**
 
     ```bash
-    git clone [https://github.com/your-username/XMLSploit.git](https://github.com/Cyber-Underground/XMLSploit/)
+    git clone https://github.com/Cyber-Underground/XMLSploit/
     ```
 
 2. **Install Dependencies:**
@@ -74,7 +74,3 @@ XMLSploit is a powerful tool designed to aid in the exploration and analysis of 
 ## Contributions
 
 Contributions to XMLSploit are welcome! If you have ideas for new payloads, feature enhancements, or bug fixes, feel free to open an issue or submit a pull request.
-
-## License
-
-XMLSploit is licensed under the [MIT License](LICENSE).
