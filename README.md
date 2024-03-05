@@ -5,6 +5,7 @@ XMLSploit is a powerful tool designed to aid in the exploration and analysis of 
 ## Features
 
 - **Comprehensive XML Payloads:** Explore a wide range of XML vulnerabilities with meticulously crafted payloads, covering the following exploit scenarios:
+  - XML file and vuln scanner
   - Exfiltration Fork Bomb
   - Simple XML Entity
   - Parameter Entity Expanding to External Entity
