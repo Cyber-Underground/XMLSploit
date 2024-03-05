@@ -136,7 +136,7 @@ def scan_website_for_xml(url, mode):
           except Exception as e:
             print("Error occurred while analyzing XML:", str(e))
       else:
-        print("No common XML files discovered.")
+        print("No common XML files or vulns discovered.")
 
       # Analyzing robots.txt file
       robots_url = urljoin(url, "robots.txt")
@@ -160,6 +160,7 @@ def scan_website_for_xml(url, mode):
               # Consider further analysis if needed
           else:
             print("No XML file exclusions found in robots.txt.")
+
         else:
           print("Failed to retrieve robots.txt file.")
       except Exception as e:
@@ -188,14 +189,14 @@ def main():
     option = input("Enter your choice: ")
 
     if option == "1":
-      url = input(
-          "\nEnter the target URL where the XML payload will be sent: ")
+      url = input(Fore.GREEN + 
+          "\nEnter the target URL where the XML payload will be sent: " + Fore.RESET)
       validation = url
       if validators.url(validation):
         payload = select_payload(xml_payloads)
         num_threads = int(
-            input("\nEnter the number of threads (default is 1): ") or "1")
-        print("\nSending payloads...")
+            input(Fore.GREEN + "\nEnter the number of threads (default is 1): ") or "1"  + Fore.RESET)
+        print(Fore.RED + "\nSending payloads..." + Fore.RESET)
         with concurrent.futures.ThreadPoolExecutor(
             max_workers=num_threads) as executor:
           futures = []
@@ -208,10 +209,10 @@ def main():
         print(Fore.RED + "Invalid URL" + Fore.RESET)
 
     elif option == "2":
-      url = input("\nEnter the website URL to scan for XML files: ")
+      url = input(Fore.GREEN + "\n Enter the website URL to scan for XML files: " + Fore.RESET)
       validation = url
       if validators.url(validation):
-        mode = input("\nChoose scanning mode (basic/advanced): ").lower()
+        mode = input(Fore.GREEN + "\nChoose scanning mode (basic/advanced): " + Fore.RESET).lower()
         scan_website_for_xml(url, mode)
       else:
         print(Fore.RED + "Invalid URL" + Fore.RESET)
