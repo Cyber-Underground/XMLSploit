@@ -61,76 +61,100 @@ def scan_website_for_xml(url, mode):
         print(
             f"Failed to retrieve content from {url}. Status code: {response.status_code}"
         )
+
     elif mode == "advanced":
-      # Fuzzing URLs
       print("Fuzzing URLs...")
-      fuzz_list = ["xml", "xsd", "dtd", "rss", "atom"]
-      discovered_xml_urls = set()
+    fuzz_list = ["xml", "xsd", "dtd", "rss", "atom"]
+    discovered_xml_urls = set()
 
-      for fuzz in fuzz_list:
-        fuzz_url = url + "/{}".format(fuzz)
-        try:
-          response = requests.get(fuzz_url)
-          if response.status_code == 200 and response.headers.get(
-              "Content-Type", "").startswith("text/xml"):
-            discovered_xml_urls.add(fuzz_url)
-        except Exception as e:
-          pass
-
-      if discovered_xml_urls:
-        print("Discovered XML files:")
-        for xml_url in discovered_xml_urls:
-          print(xml_url)
-      else:
-        print("No XML files discovered through fuzzing.")
-
-      # Checking for common XML file names
-      common_xml_files = [
-          "sitemap.xml", "sitemap_index.xml", "atom.xml", "feed.xml"
-      ]
-      discovered_common_xml_files = set()
-
-      for common_file in common_xml_files:
-        common_file_url = urljoin(url, common_file)
-        try:
-          response = requests.get(common_file_url)
-          if response.status_code == 200:
-            discovered_common_xml_files.add(common_file_url)
-        except Exception as e:
-          pass
-
-      if discovered_common_xml_files:
-        print("Discovered common XML files:")
-        for xml_file_url in discovered_common_xml_files:
-          print(xml_file_url)
-      else:
-        print("No common XML files discovered.")
-
-      # Analyzing robots.txt file
-      robots_url = urljoin(url, "robots.txt")
+    for fuzz in fuzz_list:
+      fuzz_url = url + "/{}".format(fuzz)
       try:
-        response = requests.get(robots_url)
-        if response.status_code == 200:
-          robots_content = response.text
-          exclusions = [
-              line.split(": ")[1].strip()
-              for line in robots_content.split("\n")
-              if line.startswith("Disallow")
-          ]
-          xml_exclusions = [
-              exclusion for exclusion in exclusions
-              if exclusion.endswith(".xml")
-          ]
-          if xml_exclusions:
-            print("XML file exclusions found in robots.txt:")
-            for exclusion in xml_exclusions:
-              print(exclusion)
-          else:
-            print("No XML file exclusions found in robots.txt.")
-        else:
-          print("Failed to retrieve robots.txt file.")
+        response = requests.get(fuzz_url)
+        if response.status_code == 200 and response.headers.get(
+            "Content-Type", "").startswith("text/xml"):
+          discovered_xml_urls.add(fuzz_url)
       except Exception as e:
-        print("Error retrieving robots.txt file:", str(e))
+        pass
+
+    if discovered_xml_urls:
+      print("Discovered XML files:")
+      for xml_url in discovered_xml_urls:
+        print(xml_url)
+        try:
+          xml_response = requests.get(xml_url)
+          if "SELECT" in xml_response.text.upper(
+          ) and "FROM" in xml_response.text.upper():
+            print("Potential SQL query found in:", xml_url)
+          if "eval(" in xml_response.text.lower():
+            print("Potential code injection found in:", xml_url)
+          if "system(" in xml_response.text.lower():
+            print("Potential command injection found in:", xml_url)
+          if "/bin/bash" in xml_response.text.lower():
+            print("Potential shell command found in:", xml_url)
+          if "loadjava" in xml_response.text.lower():
+            print("Potential Java code execution found in:", xml_url)
+          if "XPathExpression" in xml_response.text:
+            print("Potential XPath Injection found in:", xml_url)
+          if "<Signature>" in xml_response.text:
+            print("XML Signature found in:", xml_url)
+            # Check for XML Signature Spoofing vulnerability
+            if "spoofing" in xml_response.text.lower(
+            ) or "tampering" in xml_response.text.lower():
+              print("XML Signature Spoofing vulnerability detected in:",
+                    xml_url)
+          if "<!ENTITY" in xml_response.text:
+            print("XML Entity Expansion found in:", xml_url)
+            # Check for XML Bomb (Billion Laughs)
+            if "ENTITY" in xml_response.text.upper(
+            ) and "SYSTEM" in xml_response.text.upper():
+              print("XML Bomb (Billion Laughs) detected in:", xml_url)
+          if "<schema>" in xml_response.text:
+            print("XML Schema found in:", xml_url)
+            # Check for Schema Poisoning
+            if "xmlns" in xml_response.text.lower(
+            ) or "xsd:" in xml_response.text.lower():
+              print("XML Schema Poisoning vulnerability detected in:", xml_url)
+
+          # Extracting sensitive information
+          xml_content = xml_response.text
+          # Example: Extracting database connection strings
+          if "jdbc:mysql://" in xml_content:
+            print("Database connection string found in:", xml_url)
+          if "<apikey>" in xml_content.lower():
+            print("API keys found in:", xml_url)
+          if "<encryption_key>" in xml_content.lower():
+            print("Encryption keys found in:", xml_url)
+          # Add more checks to extract sensitive information
+        except Exception as e:
+          print("Error occurred while analyzing XML:", str(e))
+    else:
+      print("No common XML files discovered.")
+
+    # Analyzing robots.txt file
+    robots_url = urljoin(url, "robots.txt")
+    try:
+      response = requests.get(robots_url)
+      if response.status_code == 200:
+        robots_content = response.text
+        exclusions = [
+            line.split(": ")[1].strip() for line in robots_content.split("\n")
+            if line.startswith("Disallow")
+        ]
+        xml_exclusions = [
+            exclusion for exclusion in exclusions if exclusion.endswith(".xml")
+        ]
+        if xml_exclusions:
+          print("XML file exclusions found in robots.txt:")
+          for exclusion in xml_exclusions:
+            print(exclusion)
+            # Consider further analysis if needed
+        else:
+          print("No XML file exclusions found in robots.txt.")
+      else:
+        print("Failed to retrieve robots.txt file.")
+    except Exception as e:
+      print("Error retrieving robots.txt file:", str(e))
 
   except Exception as e:
     print("Error occurred during scanning:", str(e))
@@ -149,7 +173,7 @@ def main():
   while True:
     print("\nChoose an option:")
     print("1. Send XML payload to a target URL")
-    print("2. Scan a website for XML files")
+    print("2. Scan a website for XML files and vulns")
     print("3. Exit")
 
     option = input("Enter your choice: ")
